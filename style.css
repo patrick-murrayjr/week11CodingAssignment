@@ -9,15 +9,18 @@ body {
   color: white;
 }
 
-/* .container {
+/* div {
+  display: flex;
+} */
+.container {
   margin: auto;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-content: center;
   text-align: center;
-} */
-#gameboard {
+}
+#game-board {
   background-color: black;
   position: relative;
   width: 800px;
@@ -25,38 +28,42 @@ body {
   margin: auto;
   background-image: url('./images/gameboard.png');
   display: flex;
+
   align-items: center;
   justify-content: center;
 }
-.row {
-  flex-direction: column;
-}
+/* .cell-container {
+  border: 2px solid yellow;
+  width: 200px;
+  height: 170px;
+
+  display: flex;
+  flex-direction: row;
+} */
+/* .row {
+  flex-flow: row;
+} */
 .cell {
-  background-color: black;
-  margin: 12px 6px;
+  margin: 6px;
+  display: inline-block;
+  vertical-align: top;
   width: 50px;
   height: 50px;
-  /* background-image: url('./images/ghost_sprite.png'); */
+  /* border: 2px solid red; */
 }
 
 .cell.open {
-  background-color: black;
-  margin: 12px 6px;
   width: 50px;
   height: 50px;
 }
 
 .cell.pacman {
-  background-color: black;
-  margin: 12px 6px;
   width: 50px;
   height: 50px;
   background-image: url('./images/pacman_sprite.png');
 }
 
 .cell.ghost {
-  background-color: black;
-  margin: 12px 6px;
   width: 50px;
   height: 50px;
   background-image: url('./images/ghost_sprite.png');
