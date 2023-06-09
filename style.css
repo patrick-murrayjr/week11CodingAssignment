@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 :root {
   box-sizing: border-box;
   margin: 0;
@@ -9,9 +11,80 @@ body {
   color: white;
 }
 
-/* div {
-  display: flex;
-} */
+.text-blink {
+  animation-name: blink;
+  animation-duration: 10s;
+  animation-iteration-count: 3;
+}
+@keyframes blink {
+  0% {
+    color: black;
+  }
+  10% {
+    color: yellow;
+  }
+  20% {
+    color: black;
+  }
+  30% {
+    color: yellow;
+  }
+  40% {
+    color: black;
+  }
+  50% {
+    color: yellow;
+  }
+  60% {
+    color: black;
+  }
+  70% {
+    color: yellow;
+  }
+  80% {
+    color: black;
+  }
+  90% {
+    color: yellow;
+  }
+  100% {
+    color: yellow;
+  }
+}
+
+.wrapper {
+  position: relative;
+}
+.display {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.1rem;
+  position: absolute;
+  width: 100%;
+  top: 510px;
+  left: 0;
+  color: yellow;
+  display: grid;
+  text-align: center;
+  z-index: 1;
+  height: 50px;
+}
+
+.replay {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.1rem;
+  position: absolute;
+  width: 100%;
+  top: 585px;
+  left: 0;
+  color: yellow;
+  display: grid;
+  text-align: center;
+  z-index: 1;
+  height: 50px;
+}
+.hidden {
+  display: none;
+}
 .container {
   margin: auto;
   width: 100vw;

@@ -4,6 +4,7 @@ let playerOneTurn;
 let gameBoard = [];
 
 function initializeGame() {
+  console.log('initializeGame called');
   gameOver = false;
   playerOneTurn = true;
   gameBoard = [
@@ -11,9 +12,12 @@ function initializeGame() {
     [0, 0, 0],
     [0, 0, 0],
   ];
+  $('#replay').removeClass('text-blink');
+  $('#replay').addClass('hidden');
+  drawBoard(gameBoard);
 }
 initializeGame();
-drawBoard(gameBoard);
+// drawBoard(gameBoard);
 
 function isTieGame(gameBoard) {
   //flatten array, find index where element  is 0, if none are found returns -1
@@ -33,10 +37,18 @@ function checkForWin(playerToken) {
   ) {
     if (win > 0) {
       console.log('PACMAN WINS!');
+      $('#display').html('PACMAN WINS!');
+      $('#replay').removeClass('hidden');
+      $('#replay').addClass('text-blink');
+      $('#replay').on('click', () => initializeGame());
       gameOver = true;
     }
     if (win < 0) {
+      $('#display').html('GHOSTS WIN!');
+      $('#replay').removeClass('hidden');
+      $('#replay').addClass('text-blink');
       console.log('GHOSTS WIN!');
+      $('#replay').on('click', () => initializeGame());
       gameOver = true;
     }
   }
@@ -52,13 +64,16 @@ function drawBoard(gameBoard) {
     // if player one turn
     if (playerOneTurn) {
       playerToken = 1;
+      $('#display').html('PACMAN: GO!');
     } else {
       //player 2 turn
       playerToken = -1;
+      $('#display').html('GHOST: GO!');
     }
     //console.table(gameBoard);
     let board = $('#game-board');
     board.empty();
+
     let cellContainer = $(`<div class="cell-container">`);
     board.append(cellContainer);
     for (let i = 0; i < 3; i++) {
@@ -95,8 +110,13 @@ function drawBoard(gameBoard) {
               playerOneTurn = !playerOneTurn;
               drawBoard(gameBoard);
               checkForWin(playerToken);
-              if (isTieGame(gameBoard) < 0) {
+              if (isTieGame(gameBoard) < 0 && !gameOver) {
+                $('#display').html('TIE GAME!');
+                $('#replay').removeClass('hidden');
+                $('#replay').addClass('text-blink');
                 console.log('TIE GAME');
+                $('#replay').on('click', () => initializeGame());
+                gameOver = !gameOver;
               }
             }
           });
