@@ -118,6 +118,7 @@ function drawBoard(gameBoard) {
               // console.log(`col: ${$(e.target).attr('col')}`);
               gameBoard[$(e.target).attr('row')][$(e.target).attr('col')] =
                 playerToken;
+              playSound('./media/credit.wav');
               animatePlayer(
                 playerToken,
                 $(e.target).attr('row'),

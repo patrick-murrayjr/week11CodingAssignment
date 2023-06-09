@@ -13,7 +13,7 @@ body {
 
 .text-blink {
   animation-name: blink;
-  animation-duration: 10s;
+  animation-duration: 8s;
   animation-iteration-count: 3;
 }
 @keyframes blink {
@@ -74,7 +74,7 @@ body {
   font-size: 1.1rem;
   position: absolute;
   width: 100%;
-  top: 585px;
+  top: 655px;
   left: 0;
   color: yellow;
   display: grid;
