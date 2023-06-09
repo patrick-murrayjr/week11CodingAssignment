@@ -82,9 +82,11 @@ body {
   z-index: 1;
   height: 50px;
 }
+
 .hidden {
   display: none;
 }
+
 .container {
   margin: auto;
   width: 100vw;
@@ -105,24 +107,13 @@ body {
   align-items: center;
   justify-content: center;
 }
-/* .cell-container {
-  border: 2px solid yellow;
-  width: 200px;
-  height: 170px;
 
-  display: flex;
-  flex-direction: row;
-} */
-/* .row {
-  flex-flow: row;
-} */
 .cell {
   margin: 6px;
   display: inline-block;
   vertical-align: top;
   width: 50px;
   height: 50px;
-  /* border: 2px solid red; */
 }
 
 .cell.open {

@@ -2,9 +2,23 @@
 let gameOver;
 let playerOneTurn;
 let gameBoard = [];
+let introSound = new Audio();
+window.onload = pageLoad();
 
+function pageLoad() {
+  $('#replay').html('START GAME!');
+  $('#replay').removeClass('hidden');
+  $('#replay').addClass('text-blink');
+  $('#replay').on('click', () => initializeGame());
+}
+function playSound(audioSRC) {
+  introSound.src = audioSRC;
+  introSound.autoplay = true;
+  introSound.loop = false;
+}
 function initializeGame() {
   console.log('initializeGame called');
+  playSound('./media/game_start.wav');
   gameOver = false;
   playerOneTurn = true;
   gameBoard = [
@@ -16,7 +30,7 @@ function initializeGame() {
   $('#replay').addClass('hidden');
   drawBoard(gameBoard);
 }
-initializeGame();
+
 // drawBoard(gameBoard);
 
 function isTieGame(gameBoard) {
@@ -42,6 +56,7 @@ function checkForWin(playerToken) {
       $('#replay').addClass('text-blink');
       $('#replay').on('click', () => initializeGame());
       gameOver = true;
+      playSound('./media/intermission.wav');
     }
     if (win < 0) {
       $('#display').html('GHOSTS WIN!');
@@ -50,6 +65,7 @@ function checkForWin(playerToken) {
       console.log('GHOSTS WIN!');
       $('#replay').on('click', () => initializeGame());
       gameOver = true;
+      playSound('./media/intermission.wav');
     }
   }
 }
@@ -117,6 +133,8 @@ function drawBoard(gameBoard) {
                 console.log('TIE GAME');
                 $('#replay').on('click', () => initializeGame());
                 gameOver = !gameOver;
+                playSound('./media/death_1.wav');
+                // playSound('./media/death_2.wav');
               }
             }
           });
