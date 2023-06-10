@@ -3,7 +3,7 @@ let gameOver;
 let playerOneTurn;
 let gameBoard = [];
 let introSound = new Audio();
-window.onload = pageLoad();
+window.onload = pageLoad;
 
 function pageLoad() {
   $('#replay').html('START GAME!');
@@ -11,11 +11,13 @@ function pageLoad() {
   $('#replay').addClass('text-blink');
   $('#replay').on('click', () => initializeGame());
 }
+
 function playSound(audioSRC) {
   introSound.src = audioSRC;
   introSound.autoplay = true;
   introSound.loop = false;
 }
+
 function initializeGame() {
   console.log('initializeGame called');
   playSound('./media/game_start.wav');
@@ -31,41 +33,66 @@ function initializeGame() {
   drawBoard(gameBoard);
 }
 
-// drawBoard(gameBoard);
-
 function isTieGame(gameBoard) {
   //flatten array, find index where element  is 0, if none are found returns -1
-  return [].concat(...gameBoard).findIndex(element => element === 0);
+  // return [].concat(...gameBoard).findIndex(element => element === 0);
+  return [].concat(...gameBoard).every(element => element !== 0);
 }
+
+function intermission(audioSRC) {
+  $('#replay').removeClass('hidden');
+  $('#replay').addClass('text-blink');
+  $('#replay').on('click', () => initializeGame());
+  gameOver = true;
+  playSound(audioSRC);
+}
+
+function checkHorizontalWin(win) {
+  return gameBoard
+    .map(row => row.reduce((acc, cur) => acc + cur), 0)
+    .some(res => res === win);
+}
+function transpose(arr) {
+  return arr[0].map((col, i) => arr.map(row => row[i]));
+}
+
+function checkVerticalWin(win) {
+  let arr = transpose(gameBoard);
+  return arr
+    .map(row => row.reduce((acc, cur) => acc + cur), 0)
+    .some(res => res === win);
+}
+
+function checkDiagonalWin(win) {
+  let reversed = [...gameBoard].reverse();
+  return (
+    gameBoard
+      .map((row, index) => row[index])
+      .reduce((acc, cur) => acc + cur, 0) === win ||
+    reversed
+      .map((row, index) => row[index])
+      .reduce((acc, cur) => acc + cur, 0) === win
+  );
+}
+
 function checkForWin(playerToken) {
   let win = playerToken * 3;
+  checkDiagonalWin(win);
   if (
-    gameBoard[0][0] + gameBoard[0][1] + gameBoard[0][2] == win ||
-    gameBoard[1][0] + gameBoard[1][1] + gameBoard[1][2] == win ||
-    gameBoard[2][0] + gameBoard[2][1] + gameBoard[2][2] == win ||
-    gameBoard[0][0] + gameBoard[1][0] + gameBoard[2][0] == win ||
-    gameBoard[0][1] + gameBoard[1][1] + gameBoard[2][1] == win ||
-    gameBoard[0][2] + gameBoard[1][2] + gameBoard[2][2] == win ||
-    gameBoard[0][0] + gameBoard[1][1] + gameBoard[2][2] == win ||
-    gameBoard[0][2] + gameBoard[1][1] + gameBoard[2][0] == win
+    checkHorizontalWin(win) ||
+    checkVerticalWin(win) ||
+    checkDiagonalWin(win)
   ) {
     if (win > 0) {
       console.log('PACMAN WINS!');
       $('#display').html('PACMAN WINS!');
-      $('#replay').removeClass('hidden');
-      $('#replay').addClass('text-blink');
-      $('#replay').on('click', () => initializeGame());
-      gameOver = true;
-      playSound('./media/intermission.wav');
+      intermission('./media/intermission.wav');
+      return true;
     }
     if (win < 0) {
       $('#display').html('GHOSTS WIN!');
-      $('#replay').removeClass('hidden');
-      $('#replay').addClass('text-blink');
-      console.log('GHOSTS WIN!');
-      $('#replay').on('click', () => initializeGame());
-      gameOver = true;
-      playSound('./media/intermission.wav');
+      intermission('./media/intermission.wav');
+      return true;
     }
   }
 }
@@ -86,7 +113,7 @@ function drawBoard(gameBoard) {
       playerToken = -1;
       $('#display').html('GHOST: GO!');
     }
-    //console.table(gameBoard);
+
     let board = $('#game-board');
     board.empty();
 
@@ -114,8 +141,6 @@ function drawBoard(gameBoard) {
 
           cell.on('click', e => {
             if (!gameOver) {
-              // console.log(`row: ${$(e.target).attr('row')}`);
-              // console.log(`col: ${$(e.target).attr('col')}`);
               gameBoard[$(e.target).attr('row')][$(e.target).attr('col')] =
                 playerToken;
               playSound('./media/credit.wav');
@@ -127,15 +152,10 @@ function drawBoard(gameBoard) {
               playerOneTurn = !playerOneTurn;
               drawBoard(gameBoard);
               checkForWin(playerToken);
-              if (isTieGame(gameBoard) < 0 && !gameOver) {
-                $('#display').html('TIE GAME!');
-                $('#replay').removeClass('hidden');
-                $('#replay').addClass('text-blink');
+              if (isTieGame(gameBoard) && !gameOver) {
                 console.log('TIE GAME');
-                $('#replay').on('click', () => initializeGame());
-                gameOver = !gameOver;
-                playSound('./media/death_1.wav');
-                // playSound('./media/death_2.wav');
+                $('#display').html('TIE GAME!');
+                intermission('./media/death_1.wav');
               }
             }
           });
