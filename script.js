@@ -3,7 +3,7 @@ let gameOver;
 let playerOneTurn;
 let gameBoard = [];
 let pellets = [];
-// pellets.length = 11; //36;
+let pelletCounter = 0;
 let sound = new Audio();
 let wakawaka = new Audio();
 window.onload = pageLoad;
@@ -49,9 +49,9 @@ function initializeGame() {
   $('#replay').addClass('hidden');
   drawBoard(gameBoard);
   resetSprites();
+  pelletCounter = 0;
   resetPellets(pellets);
   setTimeout(playAnimations, 5000);
-  setTimeout(startWakaWaka, 5000);
 }
 
 function isTieGame(gameBoard) {
@@ -62,9 +62,10 @@ function isTieGame(gameBoard) {
 function intermission(audioSRC) {
   $('#replay').removeClass('hidden');
   $('#replay').addClass('text-blink');
-  $('#replay').on('click', () => initializeGame());
   gameOver = true;
   playSound(audioSRC);
+  $('#replay').html('PLAY AGAIN?');
+  $('#replay').on('click', () => location.reload());
 }
 
 function checkForHorizontalWin(win) {
@@ -138,38 +139,48 @@ function resetPellets(pellets) {
   let wrapper = $('#wrapper');
   let container = $('#pellet-container');
 
-  //create top row of pellets
-  for (let i = 0; i < 11; i++) {
-    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
-    position: absolute;
-     top: ${106 + 0 * i}px;
-     left: ${106 + 52 * i}px; "></div>`;
-    pellets[i] = pellet;
-  }
-  //create bottom row of pellets
-  for (let i = 11; i < 22; i++) {
+  //create bottom left row of pellets
+  for (let i = 0; i < 6; i++) {
     let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
     position: absolute;
      top: ${630}px;
-     left: ${106 + 52 * (i - 11)}px; "></div>`;
+     left: ${370 - 52 * i}px; "></div>`;
     pellets[i] = pellet;
   }
 
   //create left column of pellets
-  for (let i = 22; i < 31; i++) {
+  for (let i = 6; i < 16; i++) {
     let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
     position: absolute;
-     top: ${106 + 52 * (i - 21)}px;
+     top: ${630 - 52 * (i - 5)}px;
      left: ${106}px; "></div>`;
     pellets[i] = pellet;
   }
 
-  //create right column of pellets
-  for (let i = 31; i < 40; i++) {
+  //create top row of pellets
+  for (let i = 16; i < 25; i++) {
     let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
     position: absolute;
-     top: ${106 + 52 * (i - 30)}px;
-     left: ${627}px; "></div>`;
+     top: ${108}px;
+     left: ${106 + 52 * (i - 15)}px; "></div>`;
+    pellets[i] = pellet;
+  }
+
+  //create right column of pellets
+  for (let i = 25; i < 36; i++) {
+    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
+    position: absolute;
+     top: ${108 + 52 * (i - 25)}px;
+     left: ${632}px; "></div>`;
+    pellets[i] = pellet;
+  }
+
+  //create bottom row of pellets
+  for (let i = 36; i < 40; i++) {
+    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
+    position: absolute;
+     top: ${630}px;
+     left: ${630 - 52 * (i - 35)}px; "></div>`;
     pellets[i] = pellet;
   }
 
@@ -179,6 +190,23 @@ function resetPellets(pellets) {
   console.log(pellets.length);
   wrapper.append(container);
   console.log(container.children());
+}
+
+function eatPellets() {
+  console.log(`Eat Pellet: ${pelletCounter}`);
+  setInterval(() => {
+    removePellet();
+  }, 300);
+}
+
+function removePellet() {
+  if (pelletCounter < 40) {
+    console.log(`Remove Pellet: ${pelletCounter}`);
+    let pellet = $(`#pellet-${pelletCounter++}`);
+    pellet.addClass('hidden');
+  } else {
+    stopWakaWaka();
+  }
 }
 
 function playAnimations() {
@@ -192,6 +220,8 @@ function playAnimations() {
   ghost.removeClass('hidden');
   ghost.addClass('ghost-animate');
   wrapper.append(ghost);
+  startWakaWaka();
+  eatPellets();
 }
 
 function drawBoard(gameBoard) {
