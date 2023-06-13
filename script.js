@@ -2,7 +2,10 @@
 let gameOver;
 let playerOneTurn;
 let gameBoard = [];
-let introSound = new Audio();
+let pellets = [];
+// pellets.length = 11; //36;
+let sound = new Audio();
+let wakawaka = new Audio();
 window.onload = pageLoad;
 
 function pageLoad() {
@@ -13,9 +16,23 @@ function pageLoad() {
 }
 
 function playSound(audioSRC) {
-  introSound.src = audioSRC;
-  introSound.autoplay = true;
-  introSound.loop = false;
+  sound.src = audioSRC;
+  sound.preload = 'auto';
+  sound.volume = 0.8;
+  sound.autoplay = true;
+  sound.loop = false;
+}
+
+function startWakaWaka(audioSRC = './media/PacmanWakaWaka04.wav') {
+  wakawaka.src = audioSRC;
+  wakawaka.preload = 'auto';
+  wakawaka.volume = 0.3;
+  wakawaka.autoplay = true;
+  wakawaka.loop = true;
+}
+
+function stopWakaWaka() {
+  wakawaka.pause();
 }
 
 function initializeGame() {
@@ -31,11 +48,14 @@ function initializeGame() {
   $('#replay').removeClass('text-blink');
   $('#replay').addClass('hidden');
   drawBoard(gameBoard);
+  resetSprites();
+  resetPellets(pellets);
+  setTimeout(playAnimations, 5000);
+  setTimeout(startWakaWaka, 5000);
 }
 
 function isTieGame(gameBoard) {
-  //flatten array, find index where element  is 0, if none are found returns -1
-  // return [].concat(...gameBoard).findIndex(element => element === 0);
+  //flatten array, return true is no blank spaces (0) are left
   return [].concat(...gameBoard).every(element => element !== 0);
 }
 
@@ -47,23 +67,24 @@ function intermission(audioSRC) {
   playSound(audioSRC);
 }
 
-function checkHorizontalWin(win) {
+function checkForHorizontalWin(win) {
   return gameBoard
     .map(row => row.reduce((acc, cur) => acc + cur), 0)
     .some(res => res === win);
 }
-function transpose(arr) {
+
+function transposeArray(arr) {
   return arr[0].map((col, i) => arr.map(row => row[i]));
 }
 
-function checkVerticalWin(win) {
-  let arr = transpose(gameBoard);
+function checkForVerticalWin(win) {
+  let arr = transposeArray(gameBoard);
   return arr
     .map(row => row.reduce((acc, cur) => acc + cur), 0)
     .some(res => res === win);
 }
 
-function checkDiagonalWin(win) {
+function checkForDiagonalWin(win) {
   let reversed = [...gameBoard].reverse();
   return (
     gameBoard
@@ -77,30 +98,102 @@ function checkDiagonalWin(win) {
 
 function checkForWin(playerToken) {
   let win = playerToken * 3;
-  checkDiagonalWin(win);
+
   if (
-    checkHorizontalWin(win) ||
-    checkVerticalWin(win) ||
-    checkDiagonalWin(win)
+    checkForHorizontalWin(win) ||
+    checkForVerticalWin(win) ||
+    checkForDiagonalWin(win)
   ) {
     if (win > 0) {
       console.log('PACMAN WINS!');
       $('#display').html('PACMAN WINS!');
       intermission('./media/intermission.wav');
+      stopWakaWaka();
       return true;
     }
     if (win < 0) {
       $('#display').html('GHOSTS WIN!');
       intermission('./media/intermission.wav');
+      stopWakaWaka();
       return true;
     }
   }
 }
 
-function animatePlayer(playerToken, row, col) {
-  //
-  console.log(`token: ${playerToken} row: ${row} col: ${col}`);
+function resetSprites() {
+  let wrapper = $('#wrapper');
+  let pacman = $('#pacman-sprite');
+  pacman.removeClass('pacman-animate');
+  pacman.addClass('hidden');
+  wrapper.append(pacman);
+
+  let ghost = $('#ghost-sprite');
+  ghost.removeClass('ghost-animate');
+  ghost.addClass('hidden');
+  wrapper.append(ghost);
 }
+
+function resetPellets(pellets) {
+  console.log('Reset Pellets');
+  let wrapper = $('#wrapper');
+  let container = $('#pellet-container');
+
+  //create top row of pellets
+  for (let i = 0; i < 11; i++) {
+    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
+    position: absolute;
+     top: ${106 + 0 * i}px;
+     left: ${106 + 52 * i}px; "></div>`;
+    pellets[i] = pellet;
+  }
+  //create bottom row of pellets
+  for (let i = 11; i < 22; i++) {
+    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
+    position: absolute;
+     top: ${630}px;
+     left: ${106 + 52 * (i - 11)}px; "></div>`;
+    pellets[i] = pellet;
+  }
+
+  //create left column of pellets
+  for (let i = 22; i < 31; i++) {
+    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
+    position: absolute;
+     top: ${106 + 52 * (i - 21)}px;
+     left: ${106}px; "></div>`;
+    pellets[i] = pellet;
+  }
+
+  //create right column of pellets
+  for (let i = 31; i < 40; i++) {
+    let pellet = `<div id="pellet-${i}" class="cell pellet-sprite pellet pellet-animate" style="
+    position: absolute;
+     top: ${106 + 52 * (i - 30)}px;
+     left: ${627}px; "></div>`;
+    pellets[i] = pellet;
+  }
+
+  for (let i = 0; i < pellets.length; i++) {
+    container.append(pellets[i]);
+  }
+  console.log(pellets.length);
+  wrapper.append(container);
+  console.log(container.children());
+}
+
+function playAnimations() {
+  let wrapper = $('#wrapper');
+  let pacman = $('#pacman-sprite');
+  pacman.removeClass('hidden');
+  pacman.addClass('pacman-animate');
+  wrapper.append(pacman);
+
+  let ghost = $('#ghost-sprite');
+  ghost.removeClass('hidden');
+  ghost.addClass('ghost-animate');
+  wrapper.append(ghost);
+}
+
 function drawBoard(gameBoard) {
   if (!gameOver) {
     let playerToken;
@@ -125,11 +218,16 @@ function drawBoard(gameBoard) {
         let cell;
         if (gameBoard[i][j] < 0) {
           //create ghost cells
-          cell = $(`<div id="cell-${i * 3 + j}" class="cell ghost"></div>`);
+          cell = $(
+            `<div id="cell-${i * 3 + j}" class="cell ghost ghost-eye"></div>`
+          );
         }
         if (gameBoard[i][j] > 0) {
+          // console.log('wakawaka');
           //create pacman cells
-          cell = $(`<div id="cell-${i * 3 + j}" class="cell pacman"></div>`);
+          cell = $(
+            `<div id="cell-${i * 3 + j}" class="cell pacman chomp"></div>`
+          );
         }
         if (gameBoard[i][j] == 0) {
           //create open cells
@@ -144,11 +242,6 @@ function drawBoard(gameBoard) {
               gameBoard[$(e.target).attr('row')][$(e.target).attr('col')] =
                 playerToken;
               playSound('./media/credit.wav');
-              animatePlayer(
-                playerToken,
-                $(e.target).attr('row'),
-                $(e.target).attr('col')
-              );
               playerOneTurn = !playerOneTurn;
               drawBoard(gameBoard);
               checkForWin(playerToken);
@@ -156,6 +249,7 @@ function drawBoard(gameBoard) {
                 console.log('TIE GAME');
                 $('#display').html('TIE GAME!');
                 intermission('./media/death_1.wav');
+                stopWakaWaka();
               }
             }
           });

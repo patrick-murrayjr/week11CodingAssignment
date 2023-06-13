@@ -11,50 +11,13 @@ body {
   color: white;
 }
 
-.text-blink {
-  animation-name: blink;
-  animation-duration: 8s;
-  animation-iteration-count: 3;
-}
-@keyframes blink {
-  0% {
-    color: black;
-  }
-  10% {
-    color: yellow;
-  }
-  20% {
-    color: black;
-  }
-  30% {
-    color: yellow;
-  }
-  40% {
-    color: black;
-  }
-  50% {
-    color: yellow;
-  }
-  60% {
-    color: black;
-  }
-  70% {
-    color: yellow;
-  }
-  80% {
-    color: black;
-  }
-  90% {
-    color: yellow;
-  }
-  100% {
-    color: yellow;
-  }
-}
-
 .wrapper {
   position: relative;
+  width: 800px;
+  height: 800px;
+  margin: auto;
 }
+
 .display {
   font-family: 'Press Start 2P', cursive;
   font-size: 1.1rem;
@@ -74,17 +37,13 @@ body {
   font-size: 1.1rem;
   position: absolute;
   width: 100%;
-  top: 655px;
+  top: 580px;
   left: 0;
   color: yellow;
   display: grid;
   text-align: center;
   z-index: 1;
   height: 50px;
-}
-
-.hidden {
-  display: none;
 }
 
 .container {
@@ -132,8 +91,314 @@ body {
   height: 50px;
   background-image: url('./images/ghost_sprite.png');
 }
+
+.cell.pellet {
+  width: 50px;
+  height: 50px;
+  /* top: 630px;
+  left: 630px; */
+  background-image: url('./images/pellet_sprite.png');
+}
+
 .cell.open:hover {
   background-color: rgb(0, 0, 255, 0.4);
   box-shadow: 0 0 1px 1px white inset;
   border-radius: 3px;
+}
+
+.text-blink {
+  animation-name: blink;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  0% {
+    color: black;
+  }
+  10% {
+    color: yellow;
+  }
+  20% {
+    color: black;
+  }
+  30% {
+    color: yellow;
+  }
+  40% {
+    color: black;
+  }
+  50% {
+    color: yellow;
+  }
+  60% {
+    color: black;
+  }
+  70% {
+    color: yellow;
+  }
+  80% {
+    color: black;
+  }
+  90% {
+    color: yellow;
+  }
+  100% {
+    color: yellow;
+  }
+}
+
+.ghost-eye {
+  animation-name: ghost-eye;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes ghost-eye {
+  0% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/ghost_sprite0.png');
+  }
+
+  25% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/ghost_sprite1.png');
+  }
+
+  50% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/ghost_sprite2.png');
+  }
+
+  75% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/ghost_sprite3.png');
+  }
+}
+
+#pacman-sprite {
+  z-index: 10;
+  position: absolute;
+  top: 630px;
+  left: 370px;
+}
+
+#ghost-sprite {
+  z-index: 10;
+  position: absolute;
+  top: 106px;
+  left: 370px;
+}
+
+.pellet-sprite {
+  z-index: 5;
+  position: absolute;
+}
+
+.pellet-animate {
+  animation: pellet-animate 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes pellet-animate {
+  0% {
+    background-image: url('./images/pellet_sprite.png');
+  }
+  100% {
+    background-image: url('./images/pellet_sprite.png');
+  }
+}
+.pacman-animate {
+  animation: pacman-animate 12s, chomp 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pacman-animate {
+  /* start*/
+  0% {
+    rotate: 360deg;
+    top: 630px;
+    left: 370px;
+  }
+  /*bot left corner */
+  12% {
+    rotate: 360deg;
+  }
+  13% {
+    rotate: -270deg;
+    top: 630px;
+    left: 105px;
+  }
+
+  25% {
+    rotate: -270deg;
+    top: 370px;
+    left: 105px;
+  }
+  /* top left corner */
+  37% {
+    rotate: -270deg;
+  }
+  38% {
+    rotate: 180deg;
+    top: 106px;
+    left: 105px;
+  }
+  50% {
+    rotate: 180deg;
+    top: 106px;
+    left: 370px;
+  }
+  /* top right corner */
+  62% {
+    rotate: 180deg;
+  }
+  63% {
+    rotate: 270deg;
+    top: 106px;
+    left: 635px;
+  }
+  75% {
+    rotate: 270deg;
+    top: 370px;
+    left: 635px;
+  }
+  /* bot right corner */
+  87% {
+    rotate: 270deg;
+  }
+  88% {
+    rotate: 360deg;
+    top: 630px;
+    left: 635px;
+  }
+  /* back to start */
+  100% {
+    rotate: 360deg;
+    top: 630px;
+    left: 370px;
+  }
+}
+
+.ghost-animate {
+  animation: ghost-animate 11.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes ghost-animate {
+  /* start*/
+  0% {
+    background-image: url('./images/ghost_sprite2.png');
+    top: 106px;
+    left: 370px;
+  }
+  /* top right corner */
+  12% {
+    background-image: url('./images/ghost_sprite2.png');
+  }
+  13% {
+    background-image: url('./images/ghost_sprite3.png');
+    top: 106px;
+    left: 635px;
+  }
+  25% {
+    top: 370px;
+    left: 635px;
+  }
+  /* bot right corner */
+  37% {
+    background-image: url('./images/ghost_sprite3.png');
+  }
+  38% {
+    background-image: url('./images/ghost_sprite0.png');
+    top: 630px;
+    left: 635px;
+  }
+
+  /*bot left corner */
+  62% {
+    background-image: url('./images/ghost_sprite0.png');
+  }
+  63% {
+    background-image: url('./images/ghost_sprite1.png');
+    top: 630px;
+    left: 105px;
+  }
+
+  75% {
+    background-image: url('./images/ghost_sprite1.png');
+    top: 370px;
+    left: 105px;
+  }
+  /* top left corner */
+  87% {
+    background-image: url('./images/ghost_sprite1.png');
+  }
+  88% {
+    background-image: url('./images/ghost_sprite2.png');
+    top: 106px;
+    left: 105px;
+  }
+  100% {
+    background-image: url('./images/ghost_sprite2.png');
+    top: 106px;
+    left: 370px;
+  }
+
+  /* back to start */
+  100% {
+    background-image: url('./images/ghost_sprite2.png');
+    top: 106px;
+    left: 370px;
+  }
+}
+
+.chomp {
+  animation-name: chomp;
+  animation-duration: 500ms;
+  animation-timing-function: steps(1);
+  animation-iteration-count: infinite;
+}
+
+@keyframes chomp {
+  0% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/pacman_sprite0.png');
+  }
+  25% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/pacman_sprite1.png');
+  }
+  50% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/pacman_sprite2.png');
+  }
+  75% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/pacman_sprite1.png');
+  }
+  100% {
+    width: 50px;
+    height: 50px;
+    background-image: url('./images/pacman_sprite0.png');
+  }
+}
+
+.hidden {
+  display: none;
 }
