@@ -248,7 +248,7 @@ function resetPellets(pellets) {
 
   pellets.forEach(pellet => container.append(pellet));
 
-  // console.log(pellets.length);
+  console.log(pellets.length);
   wrapper.append(container);
   // console.log(container.children());
 }
