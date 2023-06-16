@@ -9,6 +9,8 @@
 body {
   background-color: black;
   color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.1rem;
 }
 
 .wrapper {
@@ -18,12 +20,11 @@ body {
   margin: auto;
 }
 
-.display {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1.1rem;
+.display,
+.replay {
   position: absolute;
   width: 100%;
-  top: 510px;
+
   left: 0;
   color: yellow;
   display: grid;
@@ -32,18 +33,12 @@ body {
   height: 50px;
 }
 
+.display {
+  top: 510px;
+}
+
 .replay {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1.1rem;
-  position: absolute;
-  width: 100%;
   top: 580px;
-  left: 0;
-  color: yellow;
-  display: grid;
-  text-align: center;
-  z-index: 1;
-  height: 50px;
 }
 
 .container {
@@ -62,7 +57,6 @@ body {
   margin: auto;
   background-image: url('./images/gameboard.png');
   display: flex;
-
   align-items: center;
   justify-content: center;
 }
@@ -75,28 +69,23 @@ body {
   height: 50px;
 }
 
-.cell.open {
+.cell.open,
+.cell.pacman,
+.cell.ghost,
+.cell.pellet {
   width: 50px;
   height: 50px;
 }
 
 .cell.pacman {
-  width: 50px;
-  height: 50px;
   background-image: url('./images/pacman_sprite.png');
 }
 
 .cell.ghost {
-  width: 50px;
-  height: 50px;
   background-image: url('./images/ghost_sprite.png');
 }
 
 .cell.pellet {
-  width: 50px;
-  height: 50px;
-  /* top: 630px;
-  left: 630px; */
   background-image: url('./images/pellet_sprite.png');
 }
 
