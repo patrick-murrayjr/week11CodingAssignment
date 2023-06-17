@@ -93,20 +93,6 @@ function isTieGame(gameBoard) {
 }
 
 /**
- * function intermission
- *
- *     This function creates an intermission end of game screen where the player is prompted to replay the game.
- */
-function intermission(audioSRC) {
-  $('#replay').removeClass('hidden');
-  $('#replay').addClass('text-blink');
-  gameOver = true;
-  playSound(audioSRC);
-  $('#replay').html('PLAY AGAIN?');
-  $('#replay').on('click', () => location.reload());
-}
-
-/**
  * function checkForHorizontalWin
  *
       This code defines a function called checkForHorizontalWin that takes one parameter, win.
@@ -207,6 +193,20 @@ function checkForWin(playerToken) {
       return true;
     }
   }
+}
+
+/**
+ * function intermission
+ *
+ *     This function creates an intermission end of game screen where the player is prompted to replay the game.
+ */
+function intermission(audioSRC) {
+  $('#replay').removeClass('hidden');
+  $('#replay').addClass('text-blink');
+  gameOver = true;
+  playSound(audioSRC);
+  $('#replay').html('PLAY AGAIN?');
+  $('#replay').on('click', () => location.reload());
 }
 
 /**
