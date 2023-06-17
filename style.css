@@ -1,3 +1,4 @@
+/* GLOBAL */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
@@ -13,6 +14,7 @@ body {
   font-size: 1.1rem;
 }
 
+/* GameBoard Display */
 .wrapper {
   position: relative;
   width: 800px;
@@ -61,6 +63,12 @@ body {
   justify-content: center;
 }
 
+.text-blink {
+  animation-name: blink;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+}
+
 .cell {
   margin: 6px;
   display: inline-block;
@@ -77,6 +85,7 @@ body {
   height: 50px;
 }
 
+/* SPRITES */
 .cell.pacman {
   background-image: url('./images/pacman_sprite.png');
 }
@@ -95,12 +104,63 @@ body {
   border-radius: 3px;
 }
 
-.text-blink {
-  animation-name: blink;
-  animation-duration: 8s;
+#pacman-sprite {
+  z-index: 10;
+  position: absolute;
+  top: 630px;
+  left: 370px;
+}
+
+#ghost-sprite {
+  z-index: 10;
+  position: absolute;
+  top: 106px;
+  left: 370px;
+}
+
+.pellet-sprite {
+  z-index: 5;
+  position: absolute;
+}
+
+/* ANIMATION */
+.ghost-eye {
+  animation-name: ghost-eye;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: steps(1);
+  animation-fill-mode: forwards;
+}
+
+.pellet-animate {
+  animation: pellet-animate 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.pacman-animate {
+  animation: pacman-animate 12s, chomp 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-delay: 400ms, 100ms;
+}
+.chomp {
+  animation-name: chomp;
+  animation-duration: 500ms;
+  animation-timing-function: steps(1);
   animation-iteration-count: infinite;
 }
 
+.ghost-animate {
+  animation: ghost-animate 11.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* ANIMATION KEYFRAMES */
 @keyframes blink {
   0% {
     color: black;
@@ -137,14 +197,6 @@ body {
   }
 }
 
-.ghost-eye {
-  animation-name: ghost-eye;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: steps(1);
-  animation-fill-mode: forwards;
-}
-
 @keyframes ghost-eye {
   0% {
     width: 50px;
@@ -171,31 +223,6 @@ body {
   }
 }
 
-#pacman-sprite {
-  z-index: 10;
-  position: absolute;
-  top: 630px;
-  left: 370px;
-}
-
-#ghost-sprite {
-  z-index: 10;
-  position: absolute;
-  top: 106px;
-  left: 370px;
-}
-
-.pellet-sprite {
-  z-index: 5;
-  position: absolute;
-}
-
-.pellet-animate {
-  animation: pellet-animate 500ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
 @keyframes pellet-animate {
   0% {
     background-image: url('./images/pellet_sprite.png');
@@ -203,13 +230,6 @@ body {
   100% {
     background-image: url('./images/pellet_sprite.png');
   }
-}
-.pacman-animate {
-  animation: pacman-animate 12s, chomp 500ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-  animation-delay: 400ms, 100ms;
 }
 
 @keyframes pacman-animate {
@@ -277,13 +297,6 @@ body {
     top: 630px;
     left: 370px;
   }
-}
-
-.ghost-animate {
-  animation: ghost-animate 11.5s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
 }
 
 @keyframes ghost-animate {
@@ -354,13 +367,6 @@ body {
   }
 }
 
-.chomp {
-  animation-name: chomp;
-  animation-duration: 500ms;
-  animation-timing-function: steps(1);
-  animation-iteration-count: infinite;
-}
-
 @keyframes chomp {
   0% {
     width: 50px;
@@ -389,6 +395,7 @@ body {
   }
 }
 
+/* HIDE ELEMENTS */
 .hidden {
   display: none;
 }
